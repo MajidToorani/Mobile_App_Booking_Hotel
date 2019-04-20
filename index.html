@@ -1,0 +1,483 @@
+<!--
+Mobile web development 
+Final Project
+Created by: Majid Tooranisama, 04/14/2019
+email:      mtooranisama5070@conestogac.on.ca
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <title>MT Final</title>
+        <!--jQuery-->
+        <script src="js/lib/jquery-2.1.4.js"></script>
+        <!--jQuery mobile-->
+        <script src="js/lib/jquery.mobile-1.4.5.js"></script>
+        <!--jQuery mobile css-->
+        <link rel="stylesheet" type="text/css" href="css/lib/jquery.mobile-1.4.5.css">
+		<!--my style css-->
+        <link rel="stylesheet" type="text/css" href="css/MTmystyle.css">
+        <!--jQuery validation library-->
+        <script src="js/lib/jquery.validate.js"></script>
+		<!--jQuery database-->
+        <script src="js/MTdatabase.js"></script>
+        <!--jQuery facade-->
+        <script src="js/MTfacade.js"></script>
+		<!--jQuery DAL-->
+        <script src="js/MTbookingDAL.js"></script>
+		<!--jQuery util-->
+        <script src="js/MTutil.js"></script>
+		<!--jQuery global-->
+        <script src="js/MTglobal.js"></script>
+        <!--jQuery geolocation-->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    </head>
+	<body>
+        <!--Home page-->
+        <div data-role="page" id="MTHomepage">
+            <header data-role="header" data-position="fixed" data-theme="b">
+                <h1>Book Easy Hotel</h1> 
+				<a href="#left-panel1" data-icon="bars" data-iconpos="notext" data-shadow="true">
+					Menu
+				</a>
+				<!--<div data-role="navbar" data-iconpos="top">
+                    <ul>
+                        <li><a href="#MTHomepage" data-icon="home" data-theme="a" class="ui-btn-active ui-state-persist">Home</a>
+                        </li>
+                        <li><a href="#MTBookPage" data-icon="plus" data-theme="a">Booking</a>
+						</li>
+                        <li><a href="#MTViewFeedbackPage" data-icon="grid" data-theme="a">Guests</a>
+                        </li>
+                        <li><a href="#MTSettingsPage" data-icon="gear" data-theme="a">Settings</a>
+                        </li>
+						<li><a href="#MTAboutPage" data-icon="info" data-theme="a">About</a>
+                        </li>
+                        <li><a href="#MTMap" data-icon="info" data-theme="a">Our Locations</a>
+                        </li>
+                    </ul>
+                </div>-->
+            </header>
+            <section data-role="content">
+                <h2 align="center">Book Easy Hotel App</h2>
+                <h3></h3>
+                <p>Welcome to the Majid Tooranisama's Book Easy Hotel app.
+				This application provided you to book your room 
+				and share ratings to the hotel with your friends.</p>
+				<div align="center">
+                    <img src="img/Majid-Hotel1.jpg" height="300" width="100%" alt="Hotel">
+                </div>
+                <p>Please feel free to contact me if you have any questions!</p>
+                <a href="tel:1234567890" data-role="button" data-icon="phone" data-theme="a">Call: 123-456-7890</a>               
+            </section>
+			<div data-role="panel"  data-display="overlay" id="left-panel1" data-theme="b">
+				<ul data-role="listview" data-iconpos="left">
+					<li data-icon="delete"><a href="#" data-rel="close">Close Menu</a>
+					</li>
+					<li data-icon="home"><a href="#MTHomepage"  data-rel="close" data-theme="a">Home</a>
+					</li>
+					<li data-icon="plus"><a href="#MTBookPage" data-theme="a">Booking</a>
+					</li>
+					<li data-icon="grid"><a href="#MTViewFeedbackPage" data-theme="a">Guests</a>
+					</li>
+					<li data-icon="gear" ><a href="#MTSettingsPage" data-theme="a">Settings</a>
+					</li>
+					<li data-icon="info"><a href="#MTAboutPage" data-theme="a">About</a>
+					</li>
+                    <li data-icon="location"><a href="#MTMap" data-theme="a">Our Locations</a>
+                    </li>
+				</ul>
+			</div>
+            <footer data-role="footer" data-position="fixed" data-theme="b">
+                <h4>&copy; 2019 Majid Tooranisama</h4>
+            </footer>
+        </div>
+        <!--Book Room page-->
+        <div data-role="page" id="MTBookPage">
+            <header data-role="header" data-position="fixed" data-theme="b">
+                <h1>Book your Room</h1>
+				<a href="#left-panel2" data-icon="bars" data-iconpos="notext" data-shadow="true">
+					Menu
+				</a>
+            </header>
+            <section data-role="content">
+                <div id="mainDiv">                   
+                    <form id="MTAddForm" name="MTAddForm" data-ajax="false">
+                        <label for="MTName">Guest Name: </label>
+                        <input type="text" id="MTName" name="MTName" data-clear-btn="true">
+							   					    
+					    <label for="MTType">Room Type:</label>
+						<select name="MTType" id="MTType" data-native-menu="false">
+						</select>
+
+                        <label for="MTEmail">Guest Email: </label>
+                        <input type="text" id="MTEmail" name="MTEmail" data-clear-btn="true">
+
+                        <label for="MTComment">Guest Comment: </label>
+                        <textarea id="MTComment" name="MTComment" data-clear-btn="true"></textarea>
+
+                        <label for="MTReviewDate">Booking Date:</label>
+                        <input id="MTReviewDate" name="MTReviewDate" type="date" data-clear-btn="true">
+
+						<label for="MTAddRating">Do you want to add your ratings? </label>
+						<input type="checkbox" data-role="checkbox" id="MTAddRating" name="MTAddRating">
+
+                        <div id="MTRating" style="display: none;">
+							<label for="MTFoodRating">Food Quality(0-5): </label>
+							<input type="number" id="MTFoodRating" name="MTFoodRating" data-clear-btn="true" value="0">
+							<label for="MTServiceRating">Room Service(0-5): </label>
+							<input type="number" id="MTServiceRating" name="MTServiceRating" data-clear-btn="true" value="0">
+							<label for="MTValueRating">Room Price(0-5): </label>
+							<input type="number" id="MTValueRating" name="MTValueRating" data-clear-btn="true" value="0">
+							<label for="MTOverallRating">Overall Rating(calculated): </label>
+							<input type="text" id="MTOverallRating" name="MTOverallRating"
+                                data-clear-btn="true" value="0"  disabled>
+						</div>																			   
+                        <button type="button" data-inline="true" id="MTSave" name="MTSave" class="ui-btn-active">
+                            Save
+                        </button>                      
+                    </form>
+                </div>
+				<div align="center">
+                    <img src="img/Book-Room1.jpg" width="100%" alt="Hotel">
+                </div>                
+            </section>
+			<div data-role="panel"  data-display="overlay" id="left-panel2" data-theme="b">
+				<ul data-role="listview" data-iconpos="left">
+					<li data-icon="delete"><a href="#" data-rel="close">Close Menu</a>
+					</li>
+					<li data-icon="home"><a href="#MTHomepage"  data-theme="a">Home</a>
+					</li>
+					<li data-icon="plus"><a href="#MTBookPage" data-rel="close" data-theme="a">Booking</a>
+					</li>
+					<li data-icon="grid"><a href="#MTViewFeedbackPage" data-theme="a">Guests</a>
+					</li>
+					<li data-icon="gear" ><a href="#MTSettingsPage" data-theme="a">Settings</a>
+					</li>
+					<li data-icon="info"><a href="#MTAboutPage" data-theme="a">About</a>
+					</li>
+                    <li data-icon="location"><a href="#MTMap" data-theme="a">Our Locations</a>
+                    </li>
+				</ul>
+			</div>
+            <footer data-role="footer" data-position="fixed" data-theme="b">
+                <h4>&copy; 2019 Majid Tooranisama</h4>
+            </footer>
+        </div>
+        <!--Guest list page-->
+        <div data-role="page" id="MTViewFeedbackPage">
+            <header data-role="header" data-position="fixed" data-theme="b">
+                <h1>List of Guests</h1>
+				<a href="#left-panel3" data-icon="bars" data-iconpos="notext" data-shadow="true">
+					Menu
+				</a>
+            </header>
+            <section data-role="content">
+                <ul id="MTFeedbackList" data-role="listview" class="ui-listview-inset">
+                    <li>
+                        <a href="#MTEditFeedbackPage" data-theme="a">
+
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#MTEditFeedbackPage" data-theme="a">
+
+                        </a>
+                    </li>
+                </ul>
+            </section>
+			<div data-role="panel"  data-display="overlay" id="left-panel3" data-theme="b">
+				<ul data-role="listview" data-iconpos="left">
+					<li data-icon="delete"><a href="#" data-rel="close">Close Menu</a>
+					</li>
+					<li data-icon="home"><a href="#MTHomepage" data-theme="a">Home</a>
+					</li>
+					<li data-icon="plus"><a href="#MTBookPage" data-theme="a">Booking</a>
+					</li>
+					<li data-icon="grid"><a href="#MTViewFeedbackPage"  data-rel="close" data-theme="a">Guests</a>
+					</li>
+					<li data-icon="gear" ><a href="#MTSettingsPage" data-theme="a">Settings</a>
+					</li>
+					<li data-icon="info"><a href="#MTAboutPage" data-theme="a">About</a>
+					</li>
+                    <li data-icon="location"><a href="#MTMap" data-theme="a">Our Locations</a>
+                    </li>
+				</ul>
+			</div>
+            <footer data-role="footer" data-position="fixed" data-theme="b">
+                <h4>&copy; 2019 Majid Tooranisama</h4>
+            </footer>
+        </div>
+		<!--Modify Booking page-->
+        <div data-role="page" id="MTEditFeedbackPage">
+            <header data-role="header" data-position="fixed" data-theme="b">
+                <h1>Modify Booking</h1>
+				<a href="#left-panel4" data-icon="bars" data-iconpos="notext" data-shadow="true">
+					Menu
+				</a>
+            </header>
+            <section data-role="content">
+                <div id="mainModifyDiv">
+                    <form id="MTModifyForm" name="MTModifyForm" data-ajax="false">
+                        <label for="MTModifyName">Guest Name: </label>
+                        <input type="text" id="MTModifyName" name="MTModifyName" data-clear-btn="true" placeholder="My IT Company">
+
+                        <label for="MTModifyType">Room Type:</label>
+                        <select name="MTModifyType" id="MTModifyType" data-native-menu="false">
+                        </select>
+
+                        <label for="MTModifyEmail">Guest Email: </label>
+                        <input type="text" id="MTModifyEmail" name="MTModifyEmail" data-clear-btn="true" placeholder="majidtoorani@outlook.com">
+
+                        <label for="MTModifyComment">Guest Comment: </label>
+                        <textarea id="MTModifyComment" name="MTModifyComment" data-clear-btn="true" >Good Services!</textarea>
+
+                        <label for="MTModifyReviewDate">Booking Date:</label>
+                        <input id="MTModifyReviewDate" name="MTModifyReviewDate" type="date" data-clear-btn="true">
+
+                        <label for="MTModifyRating">Do you want to add your ratings? </label>
+                        <input type="checkbox" data-role="checkbox" id="MTModifyRating" name="MTModifyRating">
+                        <div id="MTEditRating" style="display: none;">
+                            <label for="MTModifyFoodRating">Food Quality(0-5): </label>
+                            <input type="number" id="MTModifyFoodRating" name="MTModifyFoodRating" data-clear-btn="true" value="0">
+                            <label for="MTModifyServiceRating">Room Service(0-5): </label>
+                            <input type="number" id="MTModifyServiceRating" name="MTModifyServiceRating" data-clear-btn="true" value="0">
+                            <label for="MTModifyValueRating">Room Price(0-5): </label>
+                            <input type="number" id="MTModifyValueRating" name="MTModifyValueRating" data-clear-btn="true" value="0">
+                            <label for="MTModifyOverallRating">Overall Rating(calculated): </label>
+                            <input type="text" id="MTModifyOverallRating" name="MTModifyOverallRating" data-clear-btn="true" value="0"  disabled>
+                        </div>
+						<div data-role="controlgroup" data-type="horizontal">	   
+							<button type="button" data-inline="true" id="MTCancel" name="MTCancel" style="background-color:yellow">
+								Cancel
+							</button>
+							<button type="button" data-inline="true" id="MTDelete" name="MTDelete" data-theme="b">
+								Delete
+							</button>
+							<button type="button" data-inline="true" id="MTUpdate" name="MTUpdate" class="ui-btn-active">
+								Update
+							</button>
+						</div>
+                    </form>
+                </div>                
+            </section>
+			<div data-role="panel"  data-display="overlay" id="left-panel4" data-theme="b">
+				<ul data-role="listview" data-iconpos="left">
+					<li data-icon="delete"><a href="#" data-rel="close">Close Menu</a>
+					</li>
+					<li data-icon="home"><a href="#MTHomepage" data-theme="a">Home</a>
+					</li>
+					<li data-icon="plus"><a href="#MTBookPage" data-theme="a">Booking</a>
+					</li>
+					<li data-icon="grid"><a href="#MTViewFeedbackPage"  data-rel="close" data-theme="a">Guests</a>
+					</li>
+					<li data-icon="gear" ><a href="#MTSettingsPage" data-theme="a">Settings</a>
+					</li>
+					<li data-icon="info"><a href="#MTAboutPage" data-theme="a">About</a>
+					</li>
+                    <li data-icon="location"><a href="#MTMap" data-theme="a">Our Locations</a>
+                    </li>
+				</ul>
+			</div>
+			<footer data-role="footer" data-position="fixed" data-theme="b">
+                <h4>&copy; 2019 Majid Tooranisama</h4>
+            </footer>
+        </div>
+        <!--Settings page-->
+        <div data-role="page" id="MTSettingsPage">
+            <header data-role="header" data-position="fixed" data-theme="b">
+                <h1>Settings</h1>
+				<a href="#left-panel5" data-icon="bars" data-iconpos="notext" data-shadow="true">
+					Menu
+				</a>
+            </header>
+            <section data-role="content">
+				<label for="MTDefaultEmail">Default Guest Email: </label>
+				<input type="text" id="MTDefaultEmail" name="MTDefaultEmail"  data-clear-btn="true" value="mtooranisama5070@conestogac.on.ca">
+                <button type="button" id="MTSaveDefault" name="MTSaveDefault" class="ui-btn-active">Save Defaults</button>
+				<button type="button" id="MTClearDatabase" name="MTClearDatabase" data-theme="b">Clear Guests List</button>
+				<div align="center">
+                    <img src="img/Setting.jpg" width="100%" alt="Hotel">
+                </div>
+            </section>
+			<div data-role="panel"  data-display="overlay" id="left-panel5" data-theme="b">
+				<ul data-role="listview" data-iconpos="left">
+					<li data-icon="delete"><a href="#" data-rel="close">Close Menu</a>
+					</li>
+					<li data-icon="home"><a href="#MTHomepage" data-theme="a">Home</a>
+					</li>
+					<li data-icon="plus"><a href="#MTBookPage" data-theme="a">Booking</a>
+					</li>
+					<li data-icon="grid"><a href="#MTViewFeedbackPage" data-theme="a">Guests</a>
+					</li>
+					<li data-icon="gear" ><a href="#MTSettingsPage"  data-rel="close" data-theme="a">Settings</a>
+					</li>
+					<li data-icon="info"><a href="#MTAboutPage" data-theme="a">About</a>
+					</li>
+                    <li data-icon="location"><a href="#MTMap" data-theme="a">Our Locations</a>
+                    </li>
+				</ul>
+			</div>
+            <footer data-role="footer" data-position="fixed" data-theme="b">
+                <h4>&copy; 2019 Majid Tooranisama</h4>
+            </footer>
+        </div> 
+		<!--About page-->
+        <div data-role="page" id="MTAboutPage">
+            <header data-role="header" data-position="fixed" data-theme="b">
+                <h1>About Developer</h1>
+				<a href="#left-panel6" data-icon="bars" data-iconpos="notext" data-shadow="true">
+					Menu
+				</a>
+            </header>
+            <section data-role="content">
+                <h2 align="center">Majid Tooranisama</h2>
+                <h3></h3>
+                <p>Welcome to the <b><i>Majid Tooranisama's Book Easy Hotel</i></b> app.</p>
+				<p>Majid is a student of IT Innovation and Design at Conestoga College.</p>
+				<p>He is working as a Research Student at Applied Research Center of Conestoga College.</p>
+				<p>He is an enthusiastic developer at Web and Mobile Application Development.</p>
+				<div align="center">
+                    <img src="img/About-Hotel1.jpg" width="100%" alt="Hotel">
+                </div>
+                <p>Please feel free to contact me if you have any suggestions!</p>
+                <a href="tel:1234567890" data-role="button" data-icon="phone" data-theme="a">Call: 123-456-7890</a>
+                <a href="mailto:mtooranisama5070@conestogac.on.ca" data-role="button" data-icon="mail" data-theme="a">mtooranisama5070@conestogac.on.ca</a>
+                <p>Website:<p>
+				<a href="https://www.conestogac.on.ca" data-role="button" data-icon="cloud" data-theme="a">Conestoga College</a>                     
+            </section>
+			<div data-role="panel"  data-display="overlay" id="left-panel6" data-theme="b">
+				<ul data-role="listview" data-iconpos="left">
+					<li data-icon="delete"><a href="#" data-rel="close">Close Menu</a>
+					</li>
+					<li data-icon="home"><a href="#MTHomepage" data-theme="a">Home</a>
+					</li>
+					<li data-icon="plus"><a href="#MTBookPage" data-theme="a">Booking</a>
+					</li>
+					<li data-icon="grid"><a href="#MTViewFeedbackPage" data-theme="a">Guests</a>
+					</li>
+					<li data-icon="gear" ><a href="#MTSettingsPage" data-theme="a">Settings</a>
+					</li>
+					<li data-icon="info"><a href="#MTAboutPage"  data-rel="close" data-theme="a">About</a>
+					</li>
+                    <li data-icon="location"><a href="#MTMap" data-theme="a">Our Locations</a>
+                    </li>
+				</ul>
+			</div>
+            <footer data-role="footer" data-position="fixed" data-theme="b">
+                <h4>&copy; 2019 Majid Tooranisama</h4>
+            </footer>
+        </div>
+        <!--Locations page-->
+        <div data-role="page" id="MTMap">
+            <header data-role="header" data-position="fixed" data-theme="b">
+                <h1>Our Locations</h1>
+                <a href="#left-panel7" data-icon="bars" data-iconpos="notext" data-shadow="true">
+                    Menu
+                </a>
+            </header>
+
+            <script type="text/javascript">
+                google.charts.load('current', {
+                    'packages': ['table', 'map', 'corechart'],
+                    // Note: you will need to get a mapsApiKey for your project.
+                    // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+                    'mapsApiKey': 'AIzaSyD4aAE4wPldYYbSopTxFHvb_kLC_tyeYN4'
+                });
+                google.charts.setOnLoadCallback(initialize);
+
+                function initialize() {
+                    // The URL of the spreadsheet to source data from.
+                    var query = new google.visualization.Query(
+                        'https://spreadsheets.google.com/pub?key=pCQbetd-CptF0r8qmCOlZGg');
+                    query.send(draw);
+                }
+
+                function draw(response) {
+                    if (response.isError()) {
+                        alert('Error in query');
+                    }
+
+                    var ticketsData = response.getDataTable();
+                    var chart = new google.visualization.ColumnChart(
+                        document.getElementById('chart_div'));
+                    chart.draw(ticketsData, {'isStacked': false, 'legend': 'bottom',
+                        'vAxis': {'title': 'Guests per year(x 1000)'}});
+
+                    var geoData = google.visualization.arrayToDataTable([
+                        ['Lat', 'Long', 'Name', 'Pool?','Breakfast?'],
+                        [51.5072, -0.1275, 'Easy Hotel London',true, true],
+                        [48.8567, 2.3508, 'Easy Hotel Paris',true, true],
+                        [55.7500, 37.6167, 'Easy Hotel Moscow',true, false]]);
+
+                    var geoView = new google.visualization.DataView(geoData);
+                    geoView.setColumns([0, 1]);
+
+                    var table =
+                        new google.visualization.Table(document.getElementById('table_div'));
+                    table.draw(geoData, {showRowNumber: false, width: '100%', height: '100%'});
+
+                    var map =
+                        new google.visualization.Map(document.getElementById('map_div'));
+                    map.draw(geoView, {showTip: true});
+
+                    // Set a 'select' event listener for the table.
+                    // When the table is selected, we set the selection on the map.
+                    google.visualization.events.addListener(table, 'select',
+                        function() {
+                            map.setSelection(table.getSelection());
+                        });
+
+                    // Set a 'select' event listener for the map.
+                    // When the map is selected, we set the selection on the table.
+                    google.visualization.events.addListener(map, 'select',
+                        function() {
+                            table.setSelection(map.getSelection());
+                        });
+                }
+            </script>
+
+            <section>
+                <table align="center">
+                    <tr valign="top">
+                        <td style="width: 90%;">
+                            <div id="map_div" style="width: 90%; height: 100%;"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 90%;">
+                            <div id="table_div" style="align: center; width: 90%; height: 100%;"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="width: 80%;">
+                            <div id="chart_div" style="align: center; width: 80%; height: 100%;"></div>
+                        </td>
+                    </tr>
+                </table>
+            </section>
+            <div data-role="panel"  data-display="overlay" id="left-panel7" data-theme="b">
+                <ul data-role="listview" data-iconpos="left">
+                    <li data-icon="delete"><a href="#" data-rel="close">Close Menu</a>
+                    </li>
+                    <li data-icon="home"><a href="#MTHomepage" data-theme="a">Home</a>
+                    </li>
+                    <li data-icon="plus"><a href="#MTBookPage" data-theme="a">Booking</a>
+                    </li>
+                    <li data-icon="grid"><a href="#MTViewFeedbackPage" data-theme="a">Guests</a>
+                    </li>
+                    <li data-icon="gear" ><a href="#MTSettingsPage" data-theme="a">Settings</a>
+                    </li>
+                    <li data-icon="info"><a href="#MTAboutPage" data-theme="a">About</a>
+                    </li>
+                    <li data-icon="location"><a href="#MTMap" data-rel="close" data-theme="a">Our Locations</a>
+                    </li>
+                </ul>
+            </div>
+            <footer data-role="footer" data-position="fixed" data-theme="b">
+                <h4>&copy; 2019 Majid Tooranisama</h4>
+            </footer>
+        </div>
+    </body>
+</html>

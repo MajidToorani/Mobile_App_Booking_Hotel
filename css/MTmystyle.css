@@ -1,0 +1,20 @@
+/**
+ * File Name: MTmystyle.css
+ *
+ * Revision History:
+ *       Majid Tooranisama, 2019-04-14 : Created
+ */
+h2{
+	background-color: lightblue;
+}
+
+label.error{
+    color: #F00;
+    font-weight: bold;
+}
+
+input.error,
+select.error,
+textarea.error {
+    border: 1px red solid;
+}
